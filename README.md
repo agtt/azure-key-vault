@@ -20,4 +20,10 @@ settings = KeyVaultSettings(client_id="YOUR_CLIENT_ID",
 print(f"The MY_SECRET setting is {settings.MY_SECRET}")
 ```
 
+Here's an example of the str/repr representation of a typical KeyVaultSettings instance in one of my apps:
+
+```
+<class 'akvhelper.KeyVaultSettings'> <vault: https://MY_VAULT_NAME.azure.net/> <settings: db_database, db_password, db_schema, db_server, db_username, gh_token, gh_username, so_client_id, so_key, vsts_org_url, vsts_token>
+```
+
 Note the required packages in [requirements.txt](https://github.com/dmahugh/azure-key-vault/blob/master/requirements.txt), which install the Python client library for Azure Key Vault.
