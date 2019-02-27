@@ -2,6 +2,15 @@
 
 The ```KeyVaultSettings``` class provides a simple way to initialize an object that contains all of the secrets from an Azure Key Vault as properties. That object can then be passed around to methods and functions within your code that need access to those secrets.
 
+///
+# Installation
+KeyVaultSettings uses the Azure Key Vault client library for Python, and the prerequisites are in this repo's [requirements.txt](https://github.com/dmahugh/azure-key-vault/blob/master/requirements.txt) file. To install:
+
+* Clone this repo
+* Install Python (version 3.6 or higher)
+* In the root folder of the cloned repo, install the prerequisites with the command ```python -m pip install -r requirements.txt```
+
+# Usage
 For a detailed walk-through of how to set up a key vault, store secrets, and configure programmatic access to those secrets, see the blog post [Storing secrets in Azure Key Vault](https://www.dougmahugh.com/azure-key-vault/).
 
 Four settings are needed to initialize a KeyVaultSettings instance:
@@ -28,4 +37,10 @@ Here's an example of the str/repr representation of a typical KeyVaultSettings i
 <class 'akvhelper.KeyVaultSettings'> <vault: https://MY_VAULT_NAME.azure.net/> <settings: db_database, db_password, db_schema, db_server, db_username, gh_token, gh_username, so_client_id, so_key, vsts_org_url, vsts_token>
 ```
 
-Note the required packages in [requirements.txt](https://github.com/dmahugh/azure-key-vault/blob/master/requirements.txt), which install the Python client library for Azure Key Vault.
+# Contributing
+This project is a work in progress, and pull requests, feature requests and issues are welcome. I've implemented the functionality I needed for various projects, but I'm interested in knowing what may be useful to others, so please [log an issue](https://github.com/dmahugh/azure-key-vault/issues) if you have a suggestion. Thanks!
+
+# License
+This project is licensed under the [MIT License](https://github.com/dmahugh/azure-key-vault/blob/master/LICENSE).
+
+
