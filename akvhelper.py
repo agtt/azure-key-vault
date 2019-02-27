@@ -1,12 +1,10 @@
 """helper functions for cf_crawler
 """
-from contextlib import suppress
 import json
-from pprint import pprint
-import sys
 
 from azure.common.credentials import ServicePrincipalCredentials
 from azure.keyvault import KeyVaultClient
+from azure.keyvault.v7_0.models.key_vault_error_py3 import KeyVaultErrorException
 
 
 class KeyVaultSettings:
@@ -30,22 +28,25 @@ class KeyVaultSettings:
                          tenant_id="value", key_vault_uri="value")
         """
 
-        # Set property containing the list of auth settings. These settings are
-        # needed for access to the Key Vault, but are not included in __repr__
-        # because they're not Key Vault settings.
-        self.auth_settings = ["client_id", "app_secret", "tenant_id", "key_vault_uri"]
+        # Initialize the config settings used for access to the key vault.
+        self._config = {
+            "client_id": "",
+            "app_secret": "",
+            "tenant_id": "",
+            "key_vault_uri": "",
+        }
 
-        keywords = set([_ for _ in kwargs])
+        keywords = {_ for _ in kwargs}
         if keywords == set(["filename"]):
             # read Key Vault access credentials from private JSON file
             with open("../_private/keyvault-cft-vault.json") as settings_file:
                 settings = json.load(settings_file)
-            for setting in self.auth_settings:
-                self.__dict__[setting] = settings[setting]
+            for setting in self._config:
+                self._config[setting] = settings[setting]
         elif keywords == set(["client_id", "app_secret", "tenant_id", "key_vault_uri"]):
             # Key Vault access credentials passed as keyword arguments
-            for setting in self.auth_settings:
-                self.__dict__[setting] = kwargs[setting]
+            for setting in self._config:
+                self._config[setting] = kwargs[setting]
         else:
             raise SyntaxError("Invalid constructor syntax for KeyVaultSetting class.")
 
@@ -56,6 +57,7 @@ class KeyVaultSettings:
             secret_item.id.split("/")[-1] for secret_item in secret_metadata
         ]
         secrets = self.get_secret_values(secret_names)
+        print(secrets) #/////////////////////
         for secret_name in secret_names:
             self.__dict__[secret_name.replace("-", "_")] = secrets[secret_name]
 
@@ -63,27 +65,31 @@ class KeyVaultSettings:
         """Represent an instance of this class as a string.
         This is for debugging convenience, not intended for eval() useage.
         """
-        exclude = self.auth_settings  # don't include these properties
-        exclude.append(
-            "auth_settings"
-        )  # don't include the auth_settings property either
         properties = sorted(
-            [prop_name for prop_name in self.__dict__ if not prop_name in exclude]
+            [prop_name for prop_name in self.__dict__ if not prop_name == "_config"]
         )
-        return f"{self.__class__} {self.key_vault_uri} settings: {', '.join(properties)}"
+        return (
+            f"{self.__class__} "
+            f"<vault: {self._config['key_vault_uri']}> "
+            f"<settings: {', '.join(properties)}>"
+        )
 
     def get_secret(self, secret_name):
         """Get a secret from Key Vault.
         """
         credentials = ServicePrincipalCredentials(
-            client_id=self.client_id, secret=self.app_secret, tenant=self.tenant_id
+            client_id=self._config["client_id"],
+            secret=self._config["app_secret"],
+            tenant=self._config["tenant_id"],
         )
         client = KeyVaultClient(credentials)
 
         try:
-            secret_bundle = client.get_secret(self.key_vault_uri, secret_name, "")
+            secret_bundle = client.get_secret(
+                self._config["key_vault_uri"], secret_name, ""
+            )
             secret_value = secret_bundle.value
-        except:
+        except KeyVaultErrorException:
             secret_value = ""
 
         return secret_value
@@ -92,16 +98,20 @@ class KeyVaultSettings:
         """Get a list of secrets from Key Vault. Returns a dictionary.
         """
         credentials = ServicePrincipalCredentials(
-            client_id=self.client_id, secret=self.app_secret, tenant=self.tenant_id
+            client_id=self._config["client_id"],
+            secret=self._config["app_secret"],
+            tenant=self._config["tenant_id"],
         )
         client = KeyVaultClient(credentials)
 
         secret_values = {}
         for secret_name in secret_names:
             try:
-                secret_bundle = client.get_secret(self.key_vault_uri, secret_name, "")
+                secret_bundle = client.get_secret(
+                    self._config["key_vault_uri"], secret_name, ""
+                )
                 secret_values[secret_name] = secret_bundle.value
-            except:
+            except KeyVaultErrorException:
                 secret_values[secret_name] = ""
 
         return secret_values
@@ -112,13 +122,15 @@ class KeyVaultSettings:
         https://docs.microsoft.com/en-us/python/api/azure-keyvault/azure.keyvault.v7_0.models.secret_item_py3.secretitem?view=azure-python
         """
         credentials = ServicePrincipalCredentials(
-            client_id=self.client_id, secret=self.app_secret, tenant=self.tenant_id
+            client_id=self._config["client_id"],
+            secret=self._config["app_secret"],
+            tenant=self._config["tenant_id"],
         )
         client = KeyVaultClient(credentials)
 
         try:
-            secrets = client.get_secrets(self.key_vault_uri)
-        except:
+            secrets = client.get_secrets(self._config["key_vault_uri"])
+        except KeyVaultErrorException:
             secrets = []
 
         return secrets
