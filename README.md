@@ -2,7 +2,8 @@
 
 The ```KeyVaultSettings``` class provides a simple way to initialize an object that contains all of the secrets from an Azure Key Vault as properties. That object can then be passed around to methods and functions within your code that need access to those secrets.
 
-///
+The key vault secrets are read when a class instance is created. You can add new settings to the key vault at any time (through the Azure Portal, Azure CLI, or programmatically), and they'll automatically show up as properties of ```KeyVaultSettings``` the next time it is instantiated.
+
 # Installation
 KeyVaultSettings uses the Azure Key Vault client library for Python, and the prerequisites are in this repo's [requirements.txt](https://github.com/dmahugh/azure-key-vault/blob/master/requirements.txt) file. To install:
 
