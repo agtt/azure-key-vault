@@ -2,6 +2,8 @@
 
 The ```KeyVaultSettings``` class provides a simple way to initialize an object that contains all of the secrets from an Azure Key Vault as properties. That object can then be passed around to methods and functions within your code that need access to those secrets.
 
+For a detailed walk-through of how to set up a key vault, store secrets, and configure programmatic access to those secrets, see the blog post [Storing secrets in Azure Key Vault](https://www.dougmahugh.com/azure-key-vault/).
+
 Four settings are needed to initialize a KeyVaultSettings instance:
 
 * Client ID (App ID), App Secret (Password), and Tenant ID for an identity that has Get and List permissions for the key vault (typically a service principal identity)
