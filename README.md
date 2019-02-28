@@ -35,7 +35,7 @@ The str/repr representation of a KeyVaultSettings instance shows the vault name 
 ```
 <class 'akvhelper.KeyVaultSettings'>
   <vault: https://MY_VAULT_NAME.azure.net/>
-    <settings: db_database, db_password, db_schema, db_server, db_username, gh_token, gh_username, so_client_id, so_key, vsts_org_url, vsts_token>
+    <settings: gh_token, gh_username, vsts_org_url, vsts_token>
 ```
 For a detailed walk-through of how to set up a key vault, store secrets, and configure programmatic access to those secrets, see the blog post [Storing secrets in Azure Key Vault](https://www.dougmahugh.com/azure-key-vault/).
 
