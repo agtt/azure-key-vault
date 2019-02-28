@@ -51,14 +51,13 @@ class KeyVaultSettings:
             raise SyntaxError("Invalid constructor syntax for KeyVaultSetting class.")
 
         # Get all secrets from Azure Key Vault and store them as self. properties.
-        # We first get the list of all secrets in the vault, then get the values.
         secret_metadata = self.get_secrets()
         secret_names = [
             secret_item.id.split("/")[-1] for secret_item in secret_metadata
         ]
-        secrets = self.get_secret_values(secret_names)
+        secret_values = self.get_secret_values(secret_names)
         for secret_name in secret_names:
-            self.__dict__[secret_name.replace("-", "_")] = secrets[secret_name]
+            self.__dict__[secret_name.replace("-", "_")] = secret_values[secret_name]
 
     def __repr__(self):
         """Represent an instance of this class as a string.
@@ -94,7 +93,12 @@ class KeyVaultSettings:
         return secret_value
 
     def get_secret_values(self, secret_names):
-        """Get a list of secrets from Key Vault. Returns a dictionary.
+        """Reads a list of secrets from Key Vault. Returns a dictionary.
+
+        Disabled secrets return an empty string for their value.
+        Inactive secrets (outside their activation date range, if defined)
+        return their actual value. We're not currently supporting activation
+        and deactivation dates.
         """
         credentials = ServicePrincipalCredentials(
             client_id=self._config["client_id"],
