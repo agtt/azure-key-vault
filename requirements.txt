@@ -1,4 +1,1 @@
-azure-common
-azure-keyvault
-msrest
-msrestazure
+azure-keyvault==1.1.0
