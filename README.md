@@ -30,10 +30,12 @@ settings = KeyVaultSettings(client_id="YOUR_CLIENT_ID",
 print(f"The MY_SECRET setting is {settings.MY_SECRET}")
 ```
 
-Here's an example of the str/repr representation of a typical KeyVaultSettings instance in one of my apps:
+The str/repr representation of a KeyVaultSettings instance shows the vault name and a list of the secret names (but not their values):
 
 ```
-<class 'akvhelper.KeyVaultSettings'> <vault: https://MY_VAULT_NAME.azure.net/> <settings: db_database, db_password, db_schema, db_server, db_username, gh_token, gh_username, so_client_id, so_key, vsts_org_url, vsts_token>
+<class 'akvhelper.KeyVaultSettings'>
+  <vault: https://MY_VAULT_NAME.azure.net/>
+    <settings: db_database, db_password, db_schema, db_server, db_username, gh_token, gh_username, so_client_id, so_key, vsts_org_url, vsts_token>
 ```
 For a detailed walk-through of how to set up a key vault, store secrets, and configure programmatic access to those secrets, see the blog post [Storing secrets in Azure Key Vault](https://www.dougmahugh.com/azure-key-vault/).
 
