@@ -12,8 +12,6 @@ KeyVaultSettings uses the Azure Key Vault client library for Python, and the pre
 * In the root folder of the cloned repo, install the prerequisites with the command ```python -m pip install -r requirements.txt```
 
 # Usage
-For a detailed walk-through of how to set up a key vault, store secrets, and configure programmatic access to those secrets, see the blog post [Storing secrets in Azure Key Vault](https://www.dougmahugh.com/azure-key-vault/).
-
 Four settings are needed to initialize a KeyVaultSettings instance:
 
 * Client ID (App ID), App Secret (Password), and Tenant ID for an identity that has Get and List permissions for the key vault (typically a service principal identity)
@@ -37,6 +35,7 @@ Here's an example of the str/repr representation of a typical KeyVaultSettings i
 ```
 <class 'akvhelper.KeyVaultSettings'> <vault: https://MY_VAULT_NAME.azure.net/> <settings: db_database, db_password, db_schema, db_server, db_username, gh_token, gh_username, so_client_id, so_key, vsts_org_url, vsts_token>
 ```
+For a detailed walk-through of how to set up a key vault, store secrets, and configure programmatic access to those secrets, see the blog post [Storing secrets in Azure Key Vault](https://www.dougmahugh.com/azure-key-vault/).
 
 # Contributing
 This project is a work in progress, and pull requests, feature requests and issues are welcome. I've implemented the functionality I needed for various projects, but I'm interested in knowing what may be useful to others, so please [log an issue](https://github.com/dmahugh/azure-key-vault/issues) if you have a suggestion. Thanks!
