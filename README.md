@@ -1,4 +1,4 @@
-# Python helper class for reading secrets from Azure Key Vault
+# helper class for Azure Key Vault secrets
 
 The ```KeyVaultSettings``` class provides a simple way to initialize an object that contains all of the secrets from an Azure Key Vault as properties. That object can then be passed around to methods and functions within your code that need access to those secrets.
 
