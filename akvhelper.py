@@ -57,7 +57,6 @@ class KeyVaultSettings:
             secret_item.id.split("/")[-1] for secret_item in secret_metadata
         ]
         secrets = self.get_secret_values(secret_names)
-        print(secrets) #/////////////////////
         for secret_name in secret_names:
             self.__dict__[secret_name.replace("-", "_")] = secrets[secret_name]
 
