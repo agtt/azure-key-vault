@@ -5,6 +5,7 @@ import json
 from azure.common.credentials import ServicePrincipalCredentials
 from azure.keyvault import KeyVaultClient
 from azure.keyvault.v7_0.models.key_vault_error_py3 import KeyVaultErrorException
+from azure.keyvault.v7_0.models.secret_bundle_py3 import SecretBundle
 
 
 class KeyVaultSettings:
@@ -74,6 +75,9 @@ class KeyVaultSettings:
 
     def get_secret(self, secret_name):
         """Get a secret from Key Vault.
+
+        Returns a SecretBundle object.
+        Note that SecretBundle.value is the secret's value.
         """
         credentials = ServicePrincipalCredentials(
             client_id=self._config["client_id"],
@@ -86,9 +90,10 @@ class KeyVaultSettings:
             secret_bundle = client.get_secret(
                 self._config["key_vault_uri"], secret_name, ""
             )
-            secret_value = secret_bundle.value
+            print(dir(secret_bundle.__class__))
+            return secret_bundle.value
         except KeyVaultErrorException:
-            secret_value = ""
+            return SecretBundle() # empty SecretBundle object
 
         return secret_value
 
