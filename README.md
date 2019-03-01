@@ -37,6 +37,9 @@ The str/repr representation of a KeyVaultSettings instance shows the vault name 
 ```
 For a detailed walk-through of how to set up a key vault, store secrets, and configure programmatic access to those secrets, see the blog post [Storing secrets in Azure Key Vault](https://www.dougmahugh.com/azure-key-vault/).
 
+### getting a SecretBundle object
+The KeyVaultSettings class provides a simple approach for working with secrets, and only gives you access to the values of the secrets. If you need access to content types, activation/deactivation dates, or other metadata, use the ```get_secret()``` method of KeyVaultSettings, which returns a [SecretBundle](https://docs.microsoft.com/en-us/python/api/azure-keyvault/azure.keyvault.v7_0.models.secretbundle?view=azure-python) object that contains all of the secret's metadata.
+
 ## Contributing
 This project is a work in progress, and pull requests, feature requests and issues are welcome. I've implemented the functionality I needed for various projects, but I'm interested in knowing what may be useful to others, so please [log an issue](https://github.com/dmahugh/azure-key-vault/issues) if you have a suggestion. Thanks!
 
